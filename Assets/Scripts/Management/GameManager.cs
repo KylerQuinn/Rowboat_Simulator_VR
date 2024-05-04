@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
         // Init
         missionComplete = false;
         secretFound = false;
+
+        // Always-on screen
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     public bool IsMissionComplete()
