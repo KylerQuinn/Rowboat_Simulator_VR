@@ -1,0 +1,18 @@
+Rowboat Simulator Prototype: Creative Core Pathway
+
+Please, give me some feedback. Should I continue my work to make it a real game?
+
+I made this prototype as a Creative Core Pathway challenge. I used Universal Render Pipeline. I tried to use all the stuff that I learned along the pathway: light, particles, terrain, ProBuilder meshes, shader graph, animations, UI elements, 3d audio, post-processing. I also used my programming skills from the Junior Programmer Pathway to make control system of the game. You can use keyboard or touchscreen (I also have build for Android) to control the rowboat. Or you can try gamepad sticks with L1 and R1 buttons, but I can't guarantee gamepad support, because I have only one cheap model to test on.
+
+P.S. I'm sorry for the poor quality of water splash sounds. I'm using free assets with some Audio Mixer effects which improve the situation, but WebGL doesn't support audio mixer :(
+
+Credits:
+Screen joysticks - "Joystick Pack" - https://assetstore.unity.com/packages/tools/input-management/joystick-pack-107631
+Ground textures, trees, grass and bushes - "Dream Forest Tree" - https://assetstore.unity.com/packages/3d/vegetation/trees/dream-forest-tree-105297
+Seashell - "3D Seashell" - https://assetstore.unity.com/packages/3d/characters/animals/fish/3d-seashell-208785
+
+Water splashes - "Water Splash Pack" - https://assetstore.unity.com/packages/audio/sound-fx/foley/water-splash-pack-14039
+Nature sounds - "Nature - Essentials" - https://assetstore.unity.com/packages/audio/ambient/nature/nature-essentials-208227
+UI Sounds - "Free UI Click Sound Pack" - https://assetstore.unity.com/packages/audio/sound-fx/free-ui-click-sound-pack-244644
+
+Font - "Rubik Bubbles - Regular" - https://github.com/NaN-xyz/Rubik-Filtered
