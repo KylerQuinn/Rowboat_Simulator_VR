@@ -8,8 +8,17 @@ public class ActivateMoveButtons : MonoBehaviour
     [SerializeField] GameObject anotherButtonsGroup;
     [SerializeField] GameObject bothButtonsGroup;
 
+    AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void OnInteract()
     {
+        audioSource.Play();
+
         buttonsGroup.SetActive(!buttonsGroup.activeSelf);
         bothButtonsGroup.SetActive(buttonsGroup.activeSelf && anotherButtonsGroup.activeSelf);
     }
