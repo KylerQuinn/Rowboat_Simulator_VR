@@ -15,11 +15,43 @@ public class RightHandle : MonoBehaviour
     [SerializeField] int maxX = 25;
     [SerializeField] int maxY = 50;
 
+    [HideInInspector] public bool vrMoveBack;
+    [HideInInspector] public bool vrMoveForward;
+
+    private float vrInputHorizontal;
+    private float vrInputVertical;
+    float degreesCounter = 0;
+
     Rigidbody body;
 
     void Start()
     {
         body = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        if (vrMoveBack)
+        {
+            degreesCounter -= Time.deltaTime * 100;
+        }
+        else if (vrMoveForward)
+        {
+            degreesCounter += Time.deltaTime * 100;
+        }
+
+        if (degreesCounter > 360)
+        {
+            degreesCounter = 0;
+        }
+        if (degreesCounter < 0)
+        {
+            degreesCounter = 360;
+        }
+
+        float radians = degreesCounter * Mathf.Deg2Rad;
+        vrInputHorizontal = Mathf.Sin(radians);
+        vrInputVertical = Mathf.Cos(radians);
     }
 
     private void FixedUpdate()
@@ -47,6 +79,15 @@ public class RightHandle : MonoBehaviour
             vertical = joystickVertical;
         }
 
+        if (Mathf.Approximately(horizontal, 0))
+        {
+            horizontal = vrInputHorizontal;
+        }
+        if (Mathf.Approximately(vertical, 0))
+        {
+            vertical = vrInputVertical;
+        }
+
         // Local angles between -180 and 180
         float x = Mathf.Abs(body.transform.localEulerAngles.x) > 180 ? body.transform.localEulerAngles.x % 360 - 360 : body.transform.localEulerAngles.x;
         float y = Mathf.Abs(body.transform.localEulerAngles.y) > 180 ? body.transform.localEulerAngles.y % 360 - 360 : body.transform.localEulerAngles.y;
@@ -67,6 +108,26 @@ public class RightHandle : MonoBehaviour
 
         // Add rotation to the rigidbody
         body.MoveRotation(bodyZeroZRotation);
+    }
+
+    public void VRMoveForward()
+    {
+        degreesCounter = 0;
+        vrMoveForward = true;
+        vrMoveBack = false;
+    }
+
+    public void VRMoveBack()
+    {
+        degreesCounter = 0;
+        vrMoveBack = true;
+        vrMoveForward = false;
+    }
+
+    public void VRMoveStop()
+    {
+        vrMoveBack = false;
+        vrMoveForward = false;
     }
 
     // Rotation based on forces (experimental function, not in use)
@@ -106,5 +167,4 @@ public class RightHandle : MonoBehaviour
         Quaternion bodyZeroZRotation = Quaternion.Euler(new Vector3(localX, localY, boatRotation.z));
         body.MoveRotation(bodyZeroZRotation);
     }
-
 }
