@@ -60,11 +60,11 @@ public class CardboardStartup : MonoBehaviour
 
         if (Api.IsCloseButtonPressed)
         {
-            //Application.Quit();
-            StopXR();
+            Application.Quit();
+            /*StopXR();
             mainCameraVR.SetActive(false);
             mainCamera.SetActive(true);
-            ingameMenu.SetActive(true);
+            ingameMenu.SetActive(true);*/
         }
 
         if (Api.IsTriggerHeldPressed)
