@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         // When boat hits "win" gameobject
         missionComplete = true;
         missionCompleteText.SetActive(true);
-        StartCoroutine(SwitchCamera());
+        //StartCoroutine(SwitchCamera());
     }
 
     public void FoundSecret()
