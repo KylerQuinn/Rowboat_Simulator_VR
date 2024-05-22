@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
@@ -7,10 +8,12 @@ using UnityEngine.UI;
 public class SaveData : MonoBehaviour
 {
     [SerializeField] AudioMixer audioMixer;
-    [SerializeField] Slider natureVolumeSlider;
-    [SerializeField] Slider waterVolumeSlider;
-    [SerializeField] Slider uiVolumeSlider;
+    [SerializeField] Settings settings;
+    [SerializeField] TMP_Text waterVolumeValue;
+    [SerializeField] TMP_Text natureVolumeValue;
+    [SerializeField] TMP_Text UIVolumeValue;
     [SerializeField] TMP_Dropdown graphicsQualityDropdown;
+    [SerializeField] List<Toggle> graphicsToggles;
 
     string path;
 
@@ -28,7 +31,11 @@ public class SaveData : MonoBehaviour
     {
         // Init
         path = Application.persistentDataPath + "/savefile.json";
+    }
 
+    private void Start()
+    {
+        // Load
         LoadSettings();
     }
 
@@ -37,10 +44,16 @@ public class SaveData : MonoBehaviour
         // Fill all the data that will be saved
         DataSave data = new DataSave();
 
-        data.graphicsQuality = graphicsQualityDropdown.value;
-        data.natureVolume = natureVolumeSlider.value;
-        data.waterVolume = waterVolumeSlider.value;
-        data.uiVolume = uiVolumeSlider.value;
+        foreach (Toggle toggle in graphicsToggles)
+        {
+            if (toggle.isOn)
+            {
+                data.graphicsQuality = graphicsToggles.IndexOf(toggle);
+            }
+        }
+        data.natureVolume = (float)settings.natureVolume / 100;
+        data.waterVolume = (float)settings.waterVolume / 100;
+        data.uiVolume = (float)settings.uiVolume / 100;
 
         // Serialize
         string json = JsonUtility.ToJson(data);
@@ -61,20 +74,21 @@ public class SaveData : MonoBehaviour
             {
                 // Read data from the file and setup all the settings
                 DataSave data = JsonUtility.FromJson<DataSave>(json);
-                
-                // Audio volume sliders
-                natureVolumeSlider.value = data.natureVolume;
-                waterVolumeSlider.value = data.waterVolume;
-                uiVolumeSlider.value = data.uiVolume;
 
-                // Volume settings in mixer
-                audioMixer.SetFloat("NatureVolume", Mathf.Log10(data.natureVolume) * 20);
-                audioMixer.SetFloat("WaterVolume", Mathf.Log10(data.waterVolume) * 20);
-                audioMixer.SetFloat("UIVolume", Mathf.Log10(data.uiVolume) * 20);
+                settings.natureVolume = Mathf.RoundToInt(data.natureVolume * 100);
+                settings.waterVolume = Mathf.RoundToInt(data.waterVolume * 100);
+                settings.uiVolume = Mathf.RoundToInt(data.uiVolume * 100);
+
+
+                //Audio volume controls
+                settings.SetNatureVolume(data.natureVolume);
+                settings.SetWaterVolume(data.waterVolume);
+                settings.SetUIVolume(data.uiVolume);
 
                 // Graphics quality settings
                 QualitySettings.SetQualityLevel(data.graphicsQuality, true);
                 graphicsQualityDropdown.value = data.graphicsQuality;
+                graphicsToggles[data.graphicsQuality].isOn = true;
             }
             catch
             {
